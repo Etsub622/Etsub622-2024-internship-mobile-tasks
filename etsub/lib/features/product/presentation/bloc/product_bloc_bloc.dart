@@ -1,8 +1,10 @@
 import 'package:bloc/bloc.dart';
 import 'package:equatable/equatable.dart';
+import 'package:flutter/foundation.dart';
 import 'package:flutterui/features/product/data/models/product_model.dart';
 import 'package:flutterui/features/product/domain/entity/product_entity.dart';
 import 'package:flutterui/features/product/domain/usecases/product_usecases.dart';
+import 'package:flutterui/features/product/presentation/UI/dummy_data.dart';
 import 'package:meta/meta.dart';
 part 'product_bloc_event.dart';
 part 'product_bloc_state.dart';
@@ -13,9 +15,11 @@ class ProductBlocBloc extends Bloc<ProductBlocEvent, ProductBlocState> {
   final UpdateProduct updateProductUsecase;
   final DeleteProduct deleteProductUsecase;
   final InsertProduct insertProductUsecase;
+  final GetSeachedProduct getserchedusecase;
 
-  ProductBlocBloc(
+  ProductBlocBloc( 
       {required this.getProductUsecase,
+      required this.getserchedusecase,
       required this.getProductUsecases,
       required this.updateProductUsecase,
       required this.deleteProductUsecase,
@@ -37,7 +41,7 @@ class ProductBlocBloc extends Bloc<ProductBlocEvent, ProductBlocState> {
           (error) => emit(ErrorState(message: 'faild to get product')),
           (product) => emit(LoadedSingleProductState(product: product)));
     });
-
+  
     on<UpdateProductEvent>((event, emit) async {
       emit(LoadingState());
       final response = await updateProductUsecase(
@@ -67,5 +71,17 @@ class ProductBlocBloc extends Bloc<ProductBlocEvent, ProductBlocState> {
           (message) => emit(
               ProductActionSuccess(message: 'product inserted successfully')));
     });
+
+  on<SearchProductEvent>((event, emit) async {
+    emit(LoadingState());
+    final response = await getserchedusecase(GetSearchedProductParams(event.category
+    ));
+    response.fold(
+      (error) => emit(ErrorState(message: 'Failed to search for products')),
+      (product) => emit(LoadedSingleProductState(product: product)));
+  
+  });
+
+
   }
 }

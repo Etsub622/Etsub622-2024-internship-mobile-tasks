@@ -23,20 +23,7 @@ class InsertProductParams {
 }
 
 // GetProduct usecase
-class GetProduct implements UseCase<Product, GetProductParams> {
-  final ProductRepository repository;
-  GetProduct(this.repository);
 
-  @override
-  Future<Either<Failure, Product>> call(GetProductParams params) async {
-    return await repository.getProduct(params.ProductId);
-  }
-}
-
-class GetProductParams {
-  final String ProductId;
-  GetProductParams(this.ProductId);
-}
 
 // GetAllProduct usecase
 class GetAllProducts implements UseCase<List<Product>, NoParams> {
@@ -60,7 +47,7 @@ class UpdateProduct implements UseCase<String, UpdateProductParams> {
 
   @override
   Future<Either<Failure, String>> call(UpdateProductParams params) async {
-    return await repository.updateProduct(params.product,params.id);
+    return await repository.updateProduct(params.product, params.id);
   }
 }
 
@@ -84,4 +71,37 @@ class DeleteProduct implements UseCase<String, DeleteProductParams> {
 class DeleteProductParams {
   final String productId;
   DeleteProductParams(this.productId);
+}
+
+class GetProduct implements UseCase<Product, GetProductParams> {
+  final ProductRepository repository;
+  GetProduct(this.repository);
+
+  @override
+  Future<Either<Failure, Product>> call(GetProductParams params) async {
+    return await repository.getProduct(params.ProductId);
+  }
+}
+
+class GetProductParams {
+  final String ProductId;
+  GetProductParams(this.ProductId);
+}
+
+
+
+
+class GetSeachedProduct implements UseCase<Product, GetSearchedProductParams> {
+  final ProductRepository repository;
+  GetSeachedProduct(this.repository);
+
+  @override
+  Future<Either<Failure, Product>> call(GetSearchedProductParams params) async {
+    return await repository.getSearchedProduct(params.title);
+  }
+}
+
+class GetSearchedProductParams {
+  final String title;
+  GetSearchedProductParams(this.title);
 }

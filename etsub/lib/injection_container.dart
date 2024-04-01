@@ -21,6 +21,7 @@ Future<void> init() async {
         updateProductUsecase: sl(),
         deleteProductUsecase: sl(),
         insertProductUsecase: sl(),
+         getserchedusecase:sl(),
       ));
 
 //usecases
@@ -30,6 +31,8 @@ Future<void> init() async {
   sl.registerLazySingleton(() => GetAllProducts(sl()));
   sl.registerLazySingleton(() => GetProduct(sl()));
   sl.registerLazySingleton(() => DeleteProduct(sl()));
+  sl.registerLazySingleton(() => GetSeachedProduct(sl()));
+
 
 //Repository
 

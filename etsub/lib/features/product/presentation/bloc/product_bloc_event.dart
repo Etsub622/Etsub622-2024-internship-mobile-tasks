@@ -13,7 +13,6 @@ class LoadAllProductEvent extends ProductBlocEvent {
 }
 
 class GetSingleProductEvent extends ProductBlocEvent {
-  
   final String ProductId;
   const GetSingleProductEvent(this.ProductId);
 
@@ -22,15 +21,16 @@ class GetSingleProductEvent extends ProductBlocEvent {
 }
 
 class UpdateProductEvent extends ProductBlocEvent {
-  final ProductModel products; 
+  final ProductModel products;
   final String productId;
-  const UpdateProductEvent({ required this.products, required this.productId,});
+  const UpdateProductEvent({
+    required this.products,
+    required this.productId,
+  });
 
   @override
-  List<Object> get props => [productId,products];
+  List<Object> get props => [productId, products];
 }
-
-
 
 class DeleteProductEvent extends ProductBlocEvent {
   final String id;
@@ -48,3 +48,13 @@ class CreateProductEvent extends ProductBlocEvent {
   @override
   List<Object> get props => [product];
 }
+
+class SearchProductEvent extends ProductBlocEvent {
+  final String category;
+  
+  SearchProductEvent({required this.category});
+
+  @override
+  List<Object> get props => [category];
+}
+

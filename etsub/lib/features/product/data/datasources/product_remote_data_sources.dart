@@ -1,4 +1,5 @@
 import 'dart:convert';
+import 'package:flutter/foundation.dart';
 import 'package:flutterui/core/error/exceptions.dart';
 import 'package:flutterui/features/product/data/models/product_model.dart';
 import 'package:http/http.dart' as http;
@@ -9,6 +10,7 @@ abstract class ProductRemoteDataSource {
   Future<String> deleteProduct(String productId);
   Future<ProductModel> getProduct(String productId);
   Future<List<ProductModel>> getAllProducts();
+  Future<ProductModel> searchProduct(String category);
 }
 
 class ProductRemoteDataSourceImp extends ProductRemoteDataSource {
@@ -24,7 +26,7 @@ class ProductRemoteDataSourceImp extends ProductRemoteDataSource {
       'Content-Type': 'application/json',
     }, url, body: jsonEncode(product.toJson()));
     print(response.statusCode);
-  
+
     if (response.statusCode == 200) {
       return json.decode(response.body);
     } else {
@@ -96,6 +98,26 @@ class ProductRemoteDataSourceImp extends ProductRemoteDataSource {
           products.map((product) => ProductModel.fromJson(product)).toList();
 
       return res;
+    } else {
+      throw ServerException();
+    }
+  }
+
+  @override
+  Future<ProductModel> searchProduct(String title) async {
+    print('hello');
+    var url = Uri.parse("$baseUrl/products?title=$title");
+
+    final response = await client.get(
+      url,
+      headers: {
+        'Content-Type': 'application/json',
+      },
+    );
+    print(response.body);
+    print(response.statusCode);
+    if (response.statusCode == 200) {
+      return ProductModel.fromJson(jsonDecode(response.body)['product']);
     } else {
       throw ServerException();
     }

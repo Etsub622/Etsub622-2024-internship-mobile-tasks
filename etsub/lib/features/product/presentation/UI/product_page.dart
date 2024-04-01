@@ -1,8 +1,10 @@
+import 'package:flutter/cupertino.dart';
 import 'package:flutter/material.dart';
 import 'package:flutter_bloc/flutter_bloc.dart';
 import 'package:flutterui/features/product/presentation/UI/add_product.dart';
 import 'package:flutterui/features/product/presentation/UI/product_card.dart';
 import 'package:flutterui/features/product/presentation/UI/product_details.dart';
+import 'package:flutterui/features/product/presentation/UI/search_page.dart';
 import 'package:flutterui/features/product/presentation/bloc/product_bloc_bloc.dart';
 import 'package:flutterui/features/product/presentation/widget/loading_widget.dart';
 import 'package:flutterui/features/product/presentation/widget/message_display.dart';
@@ -115,6 +117,29 @@ class ProductPage extends StatelessWidget {
                   child: const Icon(
                     Icons.notifications_active_outlined,
                     size: 20,
+                  ),
+                ),
+                const SizedBox(
+                  width: 8,
+                ),
+                GestureDetector(
+                  onTap: () {
+                    Navigator.of(context)
+                        .push(MaterialPageRoute(builder: (context) {
+                      return SearchPage();
+                    }));
+                  },
+                  child: Container(
+                    height: 40,
+                    width: 40,
+                    decoration: BoxDecoration(
+                      borderRadius: BorderRadius.circular(12),
+                      border: Border.all(color: Colors.grey, width: 0.5),
+                    ),
+                    child: const Icon(
+                      Icons.search,
+                      size: 20,
+                    ),
                   ),
                 ),
               ],
