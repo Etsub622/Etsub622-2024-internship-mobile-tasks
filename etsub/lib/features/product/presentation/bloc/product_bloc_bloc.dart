@@ -17,7 +17,7 @@ class ProductBlocBloc extends Bloc<ProductBlocEvent, ProductBlocState> {
   final InsertProduct insertProductUsecase;
   final GetSeachedProduct getserchedusecase;
 
-  ProductBlocBloc( 
+  ProductBlocBloc(
       {required this.getProductUsecase,
       required this.getserchedusecase,
       required this.getProductUsecases,
@@ -41,7 +41,7 @@ class ProductBlocBloc extends Bloc<ProductBlocEvent, ProductBlocState> {
           (error) => emit(ErrorState(message: 'faild to get product')),
           (product) => emit(LoadedSingleProductState(product: product)));
     });
-  
+
     on<UpdateProductEvent>((event, emit) async {
       emit(LoadingState());
       final response = await updateProductUsecase(
@@ -72,16 +72,13 @@ class ProductBlocBloc extends Bloc<ProductBlocEvent, ProductBlocState> {
               ProductActionSuccess(message: 'product inserted successfully')));
     });
 
-  on<SearchProductEvent>((event, emit) async {
-    emit(LoadingState());
-    final response = await getserchedusecase(GetSearchedProductParams(event.category
-    ));
-    response.fold(
-      (error) => emit(ErrorState(message: 'Failed to search for products')),
-      (product) => emit(LoadedSingleProductState(product: product)));
-  
-  });
-
-
+    on<SearchProductEvent>((event, emit) async {
+      emit(LoadingState());
+      final response =
+          await getserchedusecase(GetSearchedProductParams(event.category));
+      response.fold(
+          (error) => emit(ErrorState(message: 'Failed to search for products')),
+          (products) => emit(LoadedSearchedProductState(product: products)));
+    });
   }
 }

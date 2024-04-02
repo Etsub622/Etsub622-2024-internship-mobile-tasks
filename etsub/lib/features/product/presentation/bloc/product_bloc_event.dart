@@ -51,7 +51,6 @@ class CreateProductEvent extends ProductBlocEvent {
 
 class SearchProductEvent extends ProductBlocEvent {
   final String category;
-  
   SearchProductEvent({required this.category});
 
   @override

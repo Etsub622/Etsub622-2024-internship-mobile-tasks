@@ -41,9 +41,10 @@ class ProductRepositoryImpl implements ProductRepository {
 
 // updateProduct implementation
   @override
-  Future<Either<Failure, String>> updateProduct(ProductModel product,String id) async {
+  Future<Either<Failure, String>> updateProduct(
+      ProductModel product, String id) async {
     try {
-      final res = await remoteDataSource.updateProduct(product,id);
+      final res = await remoteDataSource.updateProduct(product, id);
       return Right(res);
     } on ServerException {
       return Left(ServerFailure());
@@ -77,12 +78,14 @@ class ProductRepositoryImpl implements ProductRepository {
     }
   }
 
-
-   @override
-  Future<Either<Failure, ProductModel>> getSearchedProduct(String title) async {
-    if (true) {
+  @override
+  Future<Either<Failure, List<ProductModel>>> getSearchedProduct(String title) async {
+    if (await networkInfo.isConnected) {
+      print('ressssssgggggggggggggggggggg');
       try {
-        final res = await remoteDataSource.getProduct(title);
+        final res = await remoteDataSource.searchProduct(title);
+        print(res);
+        print('ressssssgggggggggggggggggggg');
         return Right(res);
       } on ServerException {
         return Left(ServerFailure());
@@ -91,5 +94,4 @@ class ProductRepositoryImpl implements ProductRepository {
       return Left(ServerFailure());
     }
   }
-  
 }

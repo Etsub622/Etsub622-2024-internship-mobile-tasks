@@ -53,10 +53,9 @@ class ErrorState extends ProductBlocState {
 }
 
 class LoadedSearchedProductState extends ProductBlocState {
-  final Product product;
+  final List<Product> product;
   const LoadedSearchedProductState({required this.product});
 
   @override
   List<Object> get props => [product];
 }
-

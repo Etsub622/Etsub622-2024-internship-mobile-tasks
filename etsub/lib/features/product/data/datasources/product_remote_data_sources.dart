@@ -2,6 +2,7 @@ import 'dart:convert';
 import 'package:flutter/foundation.dart';
 import 'package:flutterui/core/error/exceptions.dart';
 import 'package:flutterui/features/product/data/models/product_model.dart';
+import 'package:flutterui/features/product/domain/entity/product_entity.dart';
 import 'package:http/http.dart' as http;
 
 abstract class ProductRemoteDataSource {
@@ -10,7 +11,7 @@ abstract class ProductRemoteDataSource {
   Future<String> deleteProduct(String productId);
   Future<ProductModel> getProduct(String productId);
   Future<List<ProductModel>> getAllProducts();
-  Future<ProductModel> searchProduct(String category);
+  Future<List<ProductModel>> searchProduct(String category);
 }
 
 class ProductRemoteDataSourceImp extends ProductRemoteDataSource {
@@ -84,6 +85,7 @@ class ProductRemoteDataSourceImp extends ProductRemoteDataSource {
 
   @override
   Future<List<ProductModel>> getAllProducts() async {
+    print('get');
     var url = Uri.parse("$baseUrl/products");
     final response = await client.get(
       url,
@@ -104,7 +106,7 @@ class ProductRemoteDataSourceImp extends ProductRemoteDataSource {
   }
 
   @override
-  Future<ProductModel> searchProduct(String title) async {
+  Future<List<ProductModel>> searchProduct(String title) async {
     print('hello');
     var url = Uri.parse("$baseUrl/products?title=$title");
 
@@ -116,8 +118,13 @@ class ProductRemoteDataSourceImp extends ProductRemoteDataSource {
     );
     print(response.body);
     print(response.statusCode);
-    if (response.statusCode == 200) {
-      return ProductModel.fromJson(jsonDecode(response.body)['product']);
+     if (response.statusCode == 200) {
+      final Map<String, dynamic> responceData = json.decode(response.body);
+      final List<dynamic> products = responceData['products'];
+      final res =
+          products.map((product) => ProductModel.fromJson(product)).toList();
+
+      return res;
     } else {
       throw ServerException();
     }
